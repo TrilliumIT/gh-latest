@@ -7,13 +7,14 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting...")
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/repo/", handleRepo)
+	fmt.Println("gh-latest starting...")
 	http.ListenAndServe(":8080", nil)
 }
 
 func handleRepo(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Received request for %v\n", r.URL.Path)
 	reqLocationSlice := strings.Split(r.URL.Path, "/")
 	user := reqLocationSlice[2]
 	project := reqLocationSlice[3]
@@ -38,6 +39,8 @@ func handleRepo(w http.ResponseWriter, r *http.Request) {
 		fileUrl = fmt.Sprintf("https://github.com/%v/%v/releases/download/%v/%v", user, project, tag, file)
 	}
 
+	fmt.Printf("Redirecting to %v\n", fileUrl)
+	fmt.Println()
 	http.Redirect(w, r, fileUrl, 302)
 }
 
@@ -52,7 +55,6 @@ func getTag(user, project string) (string, error) {
 		},
 	}
 	url := fmt.Sprintf("https://github.com/%v/%v/releases/latest", user, project)
-	fmt.Println(url)
 	resp, err := client.Head(url)
 	defer resp.Body.Close()
 	if err != nil {
