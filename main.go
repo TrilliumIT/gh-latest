@@ -42,7 +42,7 @@ func handleRepo(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>gh-latest</h1><p>A simple project to get specific files from the latest release of any github repo.</p><p>Use a url like /repo/$user/$project/$filename to download that file from a github release.</p>")
+	fmt.Fprint(w, "<h1>gh-latest</h1><p>A simple project to get specific files from the latest release of any github repo.</p><p>Use a url like /repo/$user/$project/$filename to download that file from a github release.</p><p>Use 'archive.tar.gz' or 'archive.zip' as a filename to get the whole archive of the latest release.")
 }
 
 func getTag(user, project string) (string, error) {
