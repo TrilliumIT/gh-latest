@@ -14,8 +14,15 @@ func main() {
 }
 
 func handleRepo(w http.ResponseWriter, r *http.Request) {
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
 	loc := strings.Split(r.URL.Path, "/")
-	resp, err := http.Head(fmt.Sprintf("https://github.com/%v/%v/releases/latest", loc[1], loc[2]))
+	url := fmt.Sprintf("https://github.com/%v/%v/releases/latest", loc[2], loc[3])
+	fmt.Println(url)
+	resp, err := client.Head(url)
 	if err != nil {
 		panic(err)
 	}
