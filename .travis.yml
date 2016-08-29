@@ -1,18 +1,18 @@
 language: go
 
 go:
-- 1.7
+  - 1.7
 
 env:
   global:
-  - GO15VENDOREXPERIMENT=1
-  - GOOS=linux
+    - GO15VENDOREXPERIMENT=1
+    - GOOS=linux
 
 script:
-- CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o gh-latest
-- md5sum gh-latest > md5.txt
-- sha256sum gh-latest > sha256.txt
-- sha512sum gh-latest > sha512.txt
+  - CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o gh-latest
+  - md5sum gh-latest > md5.txt
+  - sha256sum gh-latest > sha256.txt
+  - sha512sum gh-latest > sha512.txt
 
 deploy:
   provider: releases
@@ -26,3 +26,6 @@ deploy:
     - sha512.txt
   on:
     tags: true
+
+after_deploy:
+ - curl -H "Content-Type: application/json" --data '{"build": true}' -X POST https://registry.hub.docker.com/u/trilliumit/gh-latest/trigger/$DOCKER_HUB_TRIGGER_TOKEN/
