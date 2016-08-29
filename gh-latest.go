@@ -23,6 +23,7 @@ func handleRepo(w http.ResponseWriter, r *http.Request) {
 	tag, err := getTag(user, project)
 	if err != nil {
 		http.Error(w, err.Error(), 502)
+		return
 	}
 
 	fileUrl := ""
@@ -56,13 +57,13 @@ func getTag(user, project string) (string, error) {
 	}
 	url := fmt.Sprintf("https://github.com/%v/%v/releases/latest", user, project)
 	resp, err := client.Head(url)
-	defer resp.Body.Close()
 	if err != nil {
-		return "", fmt.Errorf("Error retrieving latest location from github.com")
+		return "", fmt.Errorf("Error retrieving latest location from github.com\n" + err.Error())
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 302 {
-		return "", fmt.Errorf("Unexpected status code from github.com")
+		return "", fmt.Errorf("Unexpected status code from github.com\n" + err.Error())
 	}
 
 	redirLocation := resp.Header.Get(http.CanonicalHeaderKey("Location"))
