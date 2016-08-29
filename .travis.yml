@@ -28,4 +28,4 @@ deploy:
     tags: true
 
 after_deploy:
- - "curl -H 'Content-Type: application/json' --data '{\"source_type\": \"Tag\", \"source_name\": \"$TRAVIS_TAG\"}' -X POST https://registry.hub.docker.com/u/trilliumit/gh-latest/trigger/$DOCKER_HUB_TRIGGER_TOKEN/"
+ - 'curl -H "Content-Type: application/json" --data "{\"source_type\": \"Tag\", \"source_name\": \"$TRAVIS_TAG\"}" -X POST https://registry.hub.docker.com/u/trilliumit/gh-latest/trigger/$DOCKER_HUB_TRIGGER_TOKEN/'
