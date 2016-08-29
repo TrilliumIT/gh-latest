@@ -8,23 +8,20 @@ env:
   - GO15VENDOREXPERIMENT=1
   - GOOS=linux
 
-install:
-- CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o gh-latest
-
 script:
-  - md5sum gh-latest > md5.txt
-  - sha256sum gh-latest > sha256.txt
-  - sha512sum gh-latest > sha512.txt
+- CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o gh-latest
+- md5sum gh-latest > md5.txt
+- sha256sum gh-latest > sha256.txt
+- sha512sum gh-latest > sha512.txt
 
 deploy:
-  - provider: releases
-    skip_cleanup: true
-    api_key:
-      secure: key_needed
-    file:
-      - gh-latest
-      - md5.txt
-      - sha256.txt
-      - sha512.txt
-    on:
-      tags: true
+  provider: releases
+  api_key:
+    secure: jedbBHNM20mKWfHL5jsltMDbVDMjziBtdYe1qvIRQBkSZyZYe1xXLZq+lf4Nc/Y0+Fur2T8PYWm/UIvlZorZ8tqyHafboIAyYznQC/+cdBbYdjPGUa9MSjTfcx1A4X7ysoCQ+zDISu+iQth4HSdJR7h3JcariCbJ0QTpTpWvH26h0C3w7xOc+rf8f+5pahHnZ7Ua2OfrIcNrtkZ1Ue189YXR1M1iJsm3N6QL3+GLU/lH639+VxaLIqKDxpw/sVWigSgsZrCaWZ9Et29Z9ZkX2lN+Ryw0fpN25py230c+CBJOuitUWLMiddl2213x2DMVySo/oFmfxcDASsqqeiPhwdslNb2YNGbpsjqJKEpqF1Bqk6C6I3xOAZE/j4EC2DzTo2tIdrLHlEBu+hWyeBbKnbsGZcDM0/jp5fGc7w3+MRL6cG0Tpwlcfatsa4y9p8LMvjLwHphrpa/uDZ011maKe3XfUfA1cdoLjAWQEb3LdidtpgyIfvfNyBgWATuLQmXcDtHGnFNEa+QNMCeUko4fFhS2WZ9EGVm2dCC0QR/hW/q4HupQsyNrvrKTBNnBqxZxy6rrER5mtEciTunY2zh/uewsaV16Hg7NJrknrp/8TWBMClIlDH5t5dsKHWpZWl6MS/r/N3liv6XtDPrefFS1/kKuAuCK8lTPwV2Cq29SBvc=
+  file:
+    - gh-latest
+    - md5.txt
+    - sha256.txt
+    - sha512.txt
+  on:
+    tags: true
