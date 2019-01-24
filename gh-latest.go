@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -10,7 +11,11 @@ func main() {
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/repo/", handleRepo)
 	fmt.Println("gh-latest starting...")
-	http.ListenAndServe(":8080", nil)
+	port := os.Getenv("HTTP_PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe("8080"+port, nil)
 }
 
 func handleRepo(w http.ResponseWriter, r *http.Request) {
