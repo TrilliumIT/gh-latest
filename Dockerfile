@@ -1,9 +1,12 @@
+FROM golang:latest as builder
+WORKDIR /go/src/github.com/TrilliumIT/gh-latest
+COPY gh-latest.go .
+RUN CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags="-s" -o gh-latest
+
+
 FROM alpine
-
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-
-ADD https://trilliumstaffing.com/gh-latest/repo/TrilliumIT/gh-latest/gh-latest /
-RUN chmod +x gh-latest
+RUN apk --no-cache add ca-certificates
+COPY --from=builder /go/src/github.com/TrilliumIT/gh-latest .
 
 EXPOSE 8080
 

@@ -15,7 +15,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	http.ListenAndServe("8080"+port, nil)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func handleRepo(w http.ResponseWriter, r *http.Request) {
